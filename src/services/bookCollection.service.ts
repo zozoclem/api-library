@@ -51,6 +51,23 @@ export class BookCollectionService {
     });
     return bookCollection;
   }
+
+  public async updateBookCollection(
+    id: number,
+    bookId?: number,
+    available?: number,
+    state?: number,
+  ): Promise<BookCollectionDTO> {
+    const bookCollection = await BookCollection.findByPk(id);
+    if (bookCollection) {
+      if (bookId !== undefined) bookCollection.book_id = bookId;
+      if (available !== undefined) bookCollection.available = available;
+      if (state !== undefined) bookCollection.state = state;
+      return await bookCollection.save();
+    } else {
+      notFound("Book Collection");
+    }
+  }
 }
 
 export const bookCollectionService = new BookCollectionService();
