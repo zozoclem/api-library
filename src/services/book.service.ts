@@ -2,6 +2,7 @@ import { BookDTO } from "../dto/book.dto";
 import { notFound } from "../error/NotFoundError";
 import { Author } from "../models/author.model";
 import { Book } from "../models/book.model";
+import { BookCollection } from "../models/bookCollection.model";
 
 export class BookService {
   readonly includeAuthor = {
@@ -31,7 +32,7 @@ export class BookService {
     title: string,
     publishYear: number,
     authorId: number,
-    isbn: string,
+    isbn: string
   ): Promise<BookDTO> {
     let book = await Book.create({
       title: title,
@@ -48,7 +49,7 @@ export class BookService {
     title?: string,
     publishYear?: number,
     authorId?: number,
-    isbn?: string,
+    isbn?: string
   ): Promise<BookDTO> {
     const book = await Book.findByPk(id);
     if (book) {
@@ -59,6 +60,32 @@ export class BookService {
 
       await book.save();
       return book;
+    } else {
+      notFound("Book");
+    }
+  }
+
+  public async deleteBook(id: number): Promise<void> {
+    const book = await Book.findByPk(id, {
+      include: [
+        {
+          model: BookCollection,
+          as: "collections",
+        },
+      ],
+    });
+    if (book) {
+      if (book.collections.length > 0) {
+        const error = new Error(
+          "Deletion of book " +
+            id +
+            " isn't possible due to presence of his.er books in library"
+        );
+        (error as any).status = 412;
+        throw error;
+      } else {
+        book.destroy();
+      }
     } else {
       notFound("Book");
     }
