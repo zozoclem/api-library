@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Delete, Route, Path, Body, Tags, Patch } from "tsoa";
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Route,
+  Path,
+  Body,
+  Tags,
+  Patch,
+} from "tsoa";
 import { authorService } from "../services/author.service";
 import { AuthorDTO } from "../dto/author.dto";
 
@@ -20,7 +30,7 @@ export class AuthorController extends Controller {
   // Crée un nouvel auteur
   @Post("/")
   public async createAuthor(
-    @Body() requestBody: AuthorDTO
+    @Body() requestBody: AuthorDTO,
   ): Promise<AuthorDTO> {
     const { first_name, last_name } = requestBody;
     return authorService.createAuthor(first_name, last_name);
@@ -36,7 +46,7 @@ export class AuthorController extends Controller {
   @Patch("{id}")
   public async updateAuthor(
     @Path() id: number,
-    @Body() requestBody: AuthorDTO
+    @Body() requestBody: AuthorDTO,
   ): Promise<AuthorDTO> {
     const { first_name, last_name } = requestBody;
     return authorService.updateAuthor(id, first_name, last_name);

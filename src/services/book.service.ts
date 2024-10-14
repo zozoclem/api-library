@@ -26,6 +26,22 @@ export class BookService {
       notFound("Book");
     }
   }
+
+  public async createBook(
+    title: string,
+    publishYear: number,
+    authorId: number,
+    isbn: string,
+  ): Promise<BookDTO> {
+    let book = await Book.create({
+      title: title,
+      publish_year: publishYear,
+      isbn: isbn,
+      author_id: authorId,
+    });
+
+    return book;
+  }
 }
 
 export const bookService = new BookService();
