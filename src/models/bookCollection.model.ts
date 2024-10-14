@@ -44,7 +44,7 @@ BookCollection.init(
   {
     sequelize,
     tableName: "BookCollection",
-  }
+  },
 );
 
 BookCollection.belongsTo(Book, { foreignKey: "book_id", as: "book" });

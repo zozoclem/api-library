@@ -119,6 +119,38 @@
 				"parameters": []
 			}
 		},
+		"/bookCollections/{id}": {
+			"get": {
+				"operationId": "GetBookCollection",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookCollectionDTO"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"BookCollections"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
 		"/books": {
 			"get": {
 				"operationId": "GetAllBooks",
