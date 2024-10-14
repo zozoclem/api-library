@@ -1,4 +1,5 @@
 import { AuthorDTO } from "../dto/author.dto";
+import { BookDTO } from "../dto/book.dto";
 import { notFound } from "../error/NotFoundError";
 import { Author } from "../models/author.model";
 import { Book } from "../models/book.model";
@@ -84,6 +85,14 @@ export class AuthorService {
     } else {
       notFound("Author");
     }
+  }
+
+  public async getBooksByAuthorId(id: number): Promise<BookDTO[]> {
+    return await Book.findAll({
+      where: {
+        author_id: id,
+      },
+    });
   }
 }
 
