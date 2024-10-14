@@ -1,4 +1,4 @@
-import { Controller, Get, Path, Route, Tags } from "tsoa";
+import { Body, Controller, Get, Path, Post, Route, Tags } from "tsoa";
 import { BookCollectionDTO } from "../dto/bookCollection.dto";
 import { bookCollectionService } from "../services/bookCollection.service";
 
@@ -15,5 +15,16 @@ export class BookCollectionController extends Controller {
     @Path("id") id: number,
   ): Promise<BookCollectionDTO> {
     return bookCollectionService.getBookCollectionById(id);
+  }
+
+  @Post("/")
+  public async postBookCollection(
+    @Body() requestBody: BookCollectionDTO,
+  ): Promise<BookCollectionDTO> {
+    return bookCollectionService.createBookCollection(
+      requestBody.book?.id!,
+      requestBody.available,
+      requestBody.state,
+    );
   }
 }

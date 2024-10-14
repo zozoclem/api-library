@@ -38,6 +38,19 @@ export class BookCollectionService {
       notFound("Book Collection");
     }
   }
+
+  public async createBookCollection(
+    bookId: number,
+    available: number,
+    state: number,
+  ): Promise<BookCollectionDTO> {
+    let bookCollection = await BookCollection.create({
+      book_id: bookId,
+      available: available,
+      state: state,
+    });
+    return bookCollection;
+  }
 }
 
 export const bookCollectionService = new BookCollectionService();

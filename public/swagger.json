@@ -117,6 +117,36 @@
 				],
 				"security": [],
 				"parameters": []
+			},
+			"post": {
+				"operationId": "PostBookCollection",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookCollectionDTO"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"BookCollections"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/BookCollectionDTO"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/bookCollections/{id}": {
