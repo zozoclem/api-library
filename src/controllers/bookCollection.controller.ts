@@ -11,6 +11,7 @@ import {
 } from "tsoa";
 import { BookCollectionDTO } from "../dto/bookCollection.dto";
 import { bookCollectionService } from "../services/bookCollection.service";
+import { bookService } from "../services/book.service";
 
 @Route("bookCollections")
 @Tags("BookCollections")
@@ -54,5 +55,12 @@ export class BookCollectionController extends Controller {
   @Delete("{id}")
   public async deleteBookCollection(@Path("id") id: number): Promise<void> {
     await bookCollectionService.deleteBookCollection(id);
+  }
+
+  @Get("{id}/book-collections")
+  public async getBookCollectionsByBookId(
+    @Path() id: number,
+  ): Promise<BookCollectionDTO[]> {
+    return bookService.getBookCollectionsByBookId(id);
   }
 }

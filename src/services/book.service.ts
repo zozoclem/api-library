@@ -1,4 +1,5 @@
 import { BookDTO } from "../dto/book.dto";
+import { BookCollectionDTO } from "../dto/bookCollection.dto";
 import { notFound } from "../error/NotFoundError";
 import { Author } from "../models/author.model";
 import { Book } from "../models/book.model";
@@ -89,6 +90,16 @@ export class BookService {
     } else {
       notFound("Book");
     }
+  }
+
+  public async getBookCollectionsByBookId(
+    id: number,
+  ): Promise<BookCollectionDTO[]> {
+    return await BookCollection.findAll({
+      where: {
+        book_id: id,
+      },
+    });
   }
 }
 
