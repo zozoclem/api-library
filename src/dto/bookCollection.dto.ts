@@ -1,3 +1,1 @@
-export interface BookCollectionDTO {
-
-}
+export interface BookCollectionDTO {}

@@ -36,5 +36,5 @@ Author.init(
   {
     sequelize,
     tableName: "Author",
-  }
+  },
 );
