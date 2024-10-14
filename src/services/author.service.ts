@@ -1,6 +1,8 @@
-import { AuthorDTO } from "../dto/author.dto";
-import { BookDTO } from "../dto/book.dto";
+import { AuthorOutputDTO } from "../dto/author.dto";
+import { BookOutputDTO } from "../dto/book.dto";
 import { notFound } from "../error/NotFoundError";
+import { AuthorMapper } from "../mapper/author.mapper";
+import { BookMapper } from "../mapper/book.mapper";
 import { Author } from "../models/author.model";
 import { Book } from "../models/book.model";
 import { BookCollection } from "../models/bookCollection.model";
@@ -22,15 +24,16 @@ export class AuthorService {
   };
 
   // Récupère tous les auteurs
-  public async getAllAuthors(): Promise<AuthorDTO[]> {
-    return await Author.findAll();
+  public async getAllAuthors(): Promise<AuthorOutputDTO[]> {
+    let authorList = await Author.findAll();
+    return AuthorMapper.toOutputDtoList(authorList);
   }
 
   // Récupère un auteur par ID
-  public async getAuthorById(id: number): Promise<AuthorDTO> {
+  public async getAuthorById(id: number): Promise<AuthorOutputDTO> {
     let author = await Author.findByPk(id);
     if (author) {
-      return author;
+      return AuthorMapper.toOutputDto(author);
     } else {
       notFound("Author");
     }
@@ -40,8 +43,10 @@ export class AuthorService {
   public async createAuthor(
     firstName: string,
     lastName: string,
-  ): Promise<AuthorDTO> {
-    return await Author.create({ first_name: firstName, last_name: lastName });
+  ): Promise<AuthorOutputDTO> {
+    return AuthorMapper.toOutputDto(
+      await Author.create({ first_name: firstName, last_name: lastName }),
+    );
   }
 
   // Supprime un auteur par ID
@@ -76,23 +81,26 @@ export class AuthorService {
     id: number,
     firstName?: string,
     lastName?: string,
-  ): Promise<AuthorDTO> {
+  ): Promise<AuthorOutputDTO> {
     const author = await Author.findByPk(id);
     if (author) {
       if (firstName) author.first_name = firstName;
       if (lastName) author.last_name = lastName;
-      return await author.save();
+      await author.save();
+      return AuthorMapper.toOutputDto(author);
     } else {
       notFound("Author");
     }
   }
 
-  public async getBooksByAuthorId(id: number): Promise<BookDTO[]> {
-    return await Book.findAll({
-      where: {
-        author_id: id,
-      },
-    });
+  public async getBooksByAuthorId(id: number): Promise<BookOutputDTO[]> {
+    return BookMapper.toOutputDtoList(
+      await Book.findAll({
+        where: {
+          author_id: id,
+        },
+      }),
+    );
   }
 }
 
