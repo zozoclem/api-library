@@ -19,7 +19,7 @@ export class AuthorService {
       },
     ],
   };
-  
+
   // Récupère tous les auteurs
   public async getAllAuthors(): Promise<AuthorDTO[]> {
     return await Author.findAll();
@@ -38,7 +38,7 @@ export class AuthorService {
   // Crée un nouvel auteur
   public async createAuthor(
     firstName: string,
-    lastName: string
+    lastName: string,
   ): Promise<AuthorDTO> {
     return await Author.create({ first_name: firstName, last_name: lastName });
   }
@@ -54,7 +54,7 @@ export class AuthorService {
             const error = new Error(
               "Deletion of author " +
                 id +
-                " isn't possible due to presence of his.er books in library"
+                " isn't possible due to presence of his.er books in library",
             );
             (error as any).status = 412;
             throw error;
@@ -74,7 +74,7 @@ export class AuthorService {
   public async updateAuthor(
     id: number,
     firstName?: string,
-    lastName?: string
+    lastName?: string,
   ): Promise<AuthorDTO> {
     const author = await Author.findByPk(id);
     if (author) {

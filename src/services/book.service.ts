@@ -32,7 +32,7 @@ export class BookService {
     title: string,
     publishYear: number,
     authorId: number,
-    isbn: string
+    isbn: string,
   ): Promise<BookDTO> {
     let book = await Book.create({
       title: title,
@@ -49,7 +49,7 @@ export class BookService {
     title?: string,
     publishYear?: number,
     authorId?: number,
-    isbn?: string
+    isbn?: string,
   ): Promise<BookDTO> {
     const book = await Book.findByPk(id);
     if (book) {
@@ -79,7 +79,7 @@ export class BookService {
         const error = new Error(
           "Deletion of book " +
             id +
-            " isn't possible due to presence of his.er books in library"
+            " isn't possible due to presence of his.er books in library",
         );
         (error as any).status = 412;
         throw error;

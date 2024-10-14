@@ -68,6 +68,15 @@ export class BookCollectionService {
       notFound("Book Collection");
     }
   }
+
+  public async deleteBookCollection(id: number): Promise<void> {
+    const bookCollection = await BookCollection.findByPk(id);
+    if (bookCollection) {
+      await bookCollection.destroy();
+    } else {
+      notFound("Book Collection");
+    }
+  }
 }
 
 export const bookCollectionService = new BookCollectionService();

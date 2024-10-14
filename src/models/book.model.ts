@@ -51,7 +51,7 @@ Book.init(
   {
     sequelize,
     tableName: "Book",
-  }
+  },
 );
 
 Book.belongsTo(Author, { foreignKey: "author_id", as: "author" });
