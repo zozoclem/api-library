@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Delete, Route, Path, Body, Tags, Patch } from "tsoa";
 import { authorService } from "../services/author.service";
 import { AuthorDTO } from "../dto/author.dto";
-import { Author } from "../models/author.model";
 
 @Route("authors")
 @Tags("Authors")
@@ -14,15 +13,8 @@ export class AuthorController extends Controller {
 
   // Récupère un auteur par ID
   @Get("{id}")
-  public async getAuthorById(@Path() id: number): Promise<AuthorDTO | null> {
-    const author = await authorService.getAuthorById(id);
-
-    if(!author){
-      const error = new Error('Author not found');
-      (error as any).status = 404;
-      throw error;
-    }
-    return author;
+  public async getAuthorById(@Path() id: number): Promise<AuthorDTO> {
+    return authorService.getAuthorById(id);
   }
 
   // Crée un nouvel auteur
@@ -45,7 +37,7 @@ export class AuthorController extends Controller {
   public async updateAuthor(
     @Path() id: number,
     @Body() requestBody: AuthorDTO
-  ): Promise<AuthorDTO | null> {
+  ): Promise<AuthorDTO> {
     const { first_name, last_name } = requestBody;
     return authorService.updateAuthor(id, first_name, last_name);
   }
