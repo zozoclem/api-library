@@ -37,6 +37,17 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "BookCollectionDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"double","required":true},
+            "book": {"ref":"BookDTO","required":true},
+            "available": {"dataType":"double","required":true},
+            "state": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const templateService = new ExpressTemplateService(models, {"noImplicitAdditionalProperties":"throw-on-extras","bodyCoercion":true});
 
@@ -54,6 +65,35 @@ export function RegisterRoutes(app: Router) {
 
 
     
+        app.get('/bookCollections',
+            ...(fetchMiddlewares<RequestHandler>(BookCollectionController)),
+            ...(fetchMiddlewares<RequestHandler>(BookCollectionController.prototype.getAllBooksCollection)),
+
+            async function BookCollectionController_getAllBooksCollection(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new BookCollectionController();
+
+              await templateService.apiHandler({
+                methodName: 'getAllBooksCollection',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/books',
             ...(fetchMiddlewares<RequestHandler>(BookController)),
             ...(fetchMiddlewares<RequestHandler>(BookController.prototype.getAllBooks)),
