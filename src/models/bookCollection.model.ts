@@ -48,3 +48,8 @@ BookCollection.init(
 );
 
 BookCollection.belongsTo(Book, { foreignKey: "book_id", as: "book" });
+Book.hasMany(BookCollection, {
+  foreignKey: "book_id",
+  as: "collections",
+  sourceKey: "id",
+});
