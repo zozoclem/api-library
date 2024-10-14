@@ -42,6 +42,27 @@ export class BookService {
 
     return book;
   }
+
+  public async updateBook(
+    id: number,
+    title?: string,
+    publishYear?: number,
+    authorId?: number,
+    isbn?: string,
+  ): Promise<BookDTO> {
+    const book = await Book.findByPk(id);
+    if (book) {
+      if (title !== undefined) book.title = title;
+      if (publishYear != undefined) book.publish_year = publishYear;
+      if (authorId !== undefined) book.author_id = authorId;
+      if (isbn !== undefined) book.isbn = isbn;
+
+      await book.save();
+      return book;
+    } else {
+      notFound("Book");
+    }
+  }
 }
 
 export const bookService = new BookService();
