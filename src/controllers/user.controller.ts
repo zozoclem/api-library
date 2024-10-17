@@ -18,8 +18,7 @@ import {
 } from "../dto/user.dto";
 
 @Route("users")
-@Tags("Users")
-@Security("jwt")
+@Tags("Users") 
 export class UserController extends Controller {
   // Récupère tous les utilisateurs
   @Get("/")

@@ -1,8 +1,7 @@
-import * as express from "express";
-import * as jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
-export function expressAuthentication(
-  request: express.Request,
+export async function expressAuthentication(
+  request: any,
   securityName: string,
   scopes?: string[]
 ): Promise<any> {
@@ -14,29 +13,38 @@ export function expressAuthentication(
 
     return new Promise((resolve, reject) => {
       if (!token) {
-        reject(new Error("No token provided"));
+        console.log("No token provided");
+        return reject(new Error("No token provided"));
       }
-      jwt.verify(
-        token,
-        "your_jwt_secret_key",
-        function (err: any, decoded: any) {
-          if (err) {
-            reject(err);
-          } else {
-            if (scopes !== undefined) {
-              // Check if JWT contains all required scopes
-              for (let scope of scopes) {
-                if (!decoded.scopes.includes(scope)) {
-                  reject(new Error("JWT does not contain required scope."));
-                }
-              }
+
+      jwt.verify(token, "your_jwt_secret_key", (err: any, decoded: any) => {
+        if (err) {
+          console.log("Failed to authenticate token:", err);
+          return reject(err);
+        } else {
+          console.log("Token decoded:", decoded);
+          if (scopes !== undefined) {
+            const userPermissions: string[] = decoded.scopes || [];
+            console.log("User permissions:", userPermissions);
+            const hasPermissions = scopes.every(scope => userPermissions.includes(scope));
+            if (!hasPermissions) {
+              console.log("Insufficient permissions for scopes:", scopes);
+              return reject(new Error("Insufficient permissions"));
             }
-            resolve(decoded);
+
+            // Vérification de la ressource et de la permission
+            const [resource, permission] = scopes[0].split(':');
+            console.log("Resource:", resource, "Permission:", permission);
+            const resourcePermissions = userPermissions.filter((userPermission: string) => userPermission.startsWith(resource));
+            console.log("Resource permissions:", resourcePermissions);
+            if (!resourcePermissions.includes(`${resource}:${permission}`)) {
+              console.log(`Insufficient permissions for resource: ${resource}`);
+              return reject(new Error(`Insufficient permissions for resource: ${resource}`));
+            }
           }
+          resolve(decoded);
         }
-      );
+      });
     });
-  } else {
-    throw new Error("Only support JWT securityName");
   }
 }
